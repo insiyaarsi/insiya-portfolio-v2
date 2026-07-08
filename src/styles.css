@@ -1,0 +1,167 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant game (&:is(.game-mode *));
+
+@theme inline {
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-cream: var(--cream);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-mute: var(--mute);
+  --color-phosphor: var(--phosphor);
+  --color-magenta: var(--magenta);
+}
+
+/* Default (editorial) mode */
+:root {
+  --radius: 0.5rem;
+
+  --paper: oklch(0.968 0.012 85); /* #f5f2ea warm off-white */
+  --cream: oklch(0.94 0.018 80);
+  --ink: oklch(0.18 0.005 60); /* #1a1a1a */
+  --mute: oklch(0.62 0.012 75); /* #8a8578 */
+  --brand: oklch(0.68 0.19 38); /* #ff5b2e burnt orange */
+  --brand-foreground: oklch(0.98 0.005 85);
+
+  --phosphor: oklch(0.92 0.22 145); /* game mode CRT green */
+  --magenta: oklch(0.68 0.28 355);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--cream);
+  --secondary-foreground: var(--ink);
+  --muted: var(--cream);
+  --muted-foreground: var(--mute);
+  --accent: var(--brand);
+  --accent-foreground: var(--brand-foreground);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.88 0.012 80);
+  --input: oklch(0.88 0.012 80);
+  --ring: var(--brand);
+}
+
+/* Game mode: CRT phosphor overlay palette */
+.game-mode {
+  --background: oklch(0.16 0.02 150); /* #0a0f0a-ish */
+  --foreground: var(--phosphor);
+  --card: oklch(0.2 0.02 150);
+  --card-foreground: var(--phosphor);
+  --popover: oklch(0.2 0.02 150);
+  --popover-foreground: var(--phosphor);
+  --primary: var(--phosphor);
+  --primary-foreground: oklch(0.16 0.02 150);
+  --secondary: oklch(0.24 0.03 150);
+  --secondary-foreground: var(--phosphor);
+  --muted: oklch(0.24 0.03 150);
+  --muted-foreground: oklch(0.75 0.12 145);
+  --accent: var(--magenta);
+  --accent-foreground: oklch(0.16 0.02 150);
+  --border: oklch(0.38 0.08 148);
+  --input: oklch(0.38 0.08 148);
+  --ring: var(--magenta);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    transition:
+      background-color 400ms ease,
+      color 400ms ease;
+  }
+
+  .game-mode body {
+    font-family: var(--font-mono);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .game-mode h1,
+  .game-mode h2,
+  .game-mode h3,
+  .game-mode h4 {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: var(--brand-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
