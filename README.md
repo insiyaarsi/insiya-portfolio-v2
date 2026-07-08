@@ -5,7 +5,7 @@ interactive **game mode** easter egg. Built as a server-rendered
 [TanStack Start](https://tanstack.com/start) app (React 19) and deployed on
 Vercel.
 
-🔗 **Live:** _add your Vercel URL here once deployed_
+🔗 **Live:** [insiya-portfolio-v2.vercel.app](https://insiya-portfolio-v2.vercel.app/)
 
 ## Highlights
 
