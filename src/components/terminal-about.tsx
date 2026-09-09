@@ -31,16 +31,12 @@ const responses: Record<string, string[]> = {
     "gear     → acoustic + a very patient tuning app",
   ],
   gym: [
-    "split    → push / pull / legs · 4-5x per week",
+    "split    → lower / upper / lower / upper · 4x per week",
     "chasing  → back squat 1rm this cycle",
     "why      → the ceiling is always higher than i think.",
   ],
-  resume: [
-    "opening résumé in a new tab… (drive.google.com)",
-  ],
-  photos: [
-    "opening /photos — a small gallery of sunsets, water, and skies.",
-  ],
+  resume: ["opening résumé in a new tab… (drive.google.com)"],
+  photos: ["opening /photos — a small gallery of sunsets, water, and skies."],
   contact: [
     `email    → ${site.email}`,
     "github   → github.com/insiyaarsi",
@@ -53,7 +49,6 @@ const responses: Record<string, string[]> = {
 };
 
 const chips = ["whoami", "currently", "skills", "books", "gym", "resume"] as const;
-
 
 export function TerminalAbout() {
   const [lines, setLines] = useState<Line[]>([
@@ -106,7 +101,6 @@ export function TerminalAbout() {
         : [{ kind: "out" as const, text: `command not found: ${cmd} — try 'help'` }]),
     ]);
   };
-
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card">
