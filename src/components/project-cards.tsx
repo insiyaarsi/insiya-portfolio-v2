@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Sparkles } from "lucide-react";
-import { projects, type Project } from "@/lib/projects";
+import { projectsByCategory, type Project } from "@/lib/projects";
 
 function StatusDot({ status }: { status: Project["status"] }) {
   const color =
@@ -8,7 +8,9 @@ function StatusDot({ status }: { status: Project["status"] }) {
       ? "bg-brand"
       : status === "shipping"
         ? "bg-yellow-500"
-        : "bg-emerald-500";
+        : status === "simulator"
+          ? "bg-sky-500"
+          : "bg-emerald-500";
   return (
     <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
       <span className={`h-1.5 w-1.5 rounded-full ${color}`} />
@@ -17,10 +19,11 @@ function StatusDot({ status }: { status: Project["status"] }) {
   );
 }
 
-export function ProjectCards() {
+export function ProjectCards({ category }: { category: Project["category"] }) {
+  const items = projectsByCategory(category);
   return (
-    <div className="grid gap-6 md:grid-cols-3">
-      {projects.map((p, idx) => (
+    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+      {items.map((p, idx) => (
         <Link
           key={p.slug}
           to="/projects/$slug"
@@ -36,10 +39,12 @@ export function ProjectCards() {
               src={p.thumbnail}
               alt={`${p.name} preview`}
               loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+              className={`absolute inset-0 h-full w-full transition-transform duration-500 group-hover:scale-[1.03] ${
+                p.containThumbnail ? "object-contain p-2" : "object-cover object-top"
+              }`}
             />
             <span className="absolute bottom-2 left-2 rounded bg-background/85 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur">
-              side {String.fromCharCode(65 + idx)}
+              {category === "hardware" ? "build" : "side"} {String.fromCharCode(65 + idx)}
             </span>
           </div>
 

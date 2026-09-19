@@ -110,7 +110,7 @@ function Index() {
 
       {/* PROJECTS */}
       <section id="projects" className="mx-auto max-w-6xl px-6 py-24 scroll-mt-24">
-        <div className="mb-10 flex items-end justify-between">
+        <div className="mb-12 flex items-end justify-between">
           <div>
             <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
               /projects
@@ -120,7 +120,30 @@ function Index() {
             </h2>
           </div>
         </div>
-        <ProjectCards />
+
+        {/* subsection: software */}
+        <div className="mb-6 flex items-baseline gap-4">
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-brand">
+            /software
+          </span>
+          <span className="h-px flex-1 bg-border" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            apps, APIs, and models
+          </span>
+        </div>
+        <ProjectCards category="software" />
+
+        {/* subsection: hardware */}
+        <div className="mb-6 mt-16 flex items-baseline gap-4">
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-brand">
+            /hardware
+          </span>
+          <span className="h-px flex-1 bg-border" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            things with pins and solder
+          </span>
+        </div>
+        <ProjectCards category="hardware" />
       </section>
 
       <JourneyTimeline />

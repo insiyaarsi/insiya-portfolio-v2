@@ -29,9 +29,7 @@ function ProjectNotFound() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-32 text-center">
       <h1 className="font-serif text-4xl">Project not found</h1>
-      <p className="mt-3 text-muted-foreground">
-        That project doesn't exist (yet).
-      </p>
+      <p className="mt-3 text-muted-foreground">That project doesn't exist (yet).</p>
       <Link
         to="/"
         className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-brand"
@@ -43,9 +41,12 @@ function ProjectNotFound() {
 }
 
 function ProjectPage() {
-  const { project: p } = Route.useLoaderData() as { project: NonNullable<ReturnType<typeof getProject>> };
-  const others = projects.filter((x) => x.slug !== p.slug);
-
+  const { project: p } = Route.useLoaderData() as {
+    project: NonNullable<ReturnType<typeof getProject>>;
+  };
+  const others = projects
+    .filter((x) => x.slug !== p.slug)
+    .sort((a, b) => Number(b.category === p.category) - Number(a.category === p.category));
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
@@ -67,9 +68,7 @@ function ProjectPage() {
             </span>
           )}
         </div>
-        <h1 className="mt-4 font-serif text-5xl leading-[1.05] tracking-tight">
-          {p.name}
-        </h1>
+        <h1 className="mt-4 font-serif text-5xl leading-[1.05] tracking-tight">{p.name}</h1>
         <p className="mt-4 text-xl text-muted-foreground">{p.tagline}</p>
         <div className="mt-6 grid grid-cols-2 gap-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground sm:grid-cols-3">
           <div>
@@ -96,7 +95,11 @@ function ProjectPage() {
         <img
           src={p.thumbnail}
           alt={`${p.name} screenshot`}
-          className="h-full w-full object-cover object-top"
+          className={
+            p.containThumbnail
+              ? "h-full w-full object-contain p-4"
+              : "h-full w-full object-cover object-top"
+          }
         />
       </div>
 
@@ -120,16 +123,29 @@ function ProjectPage() {
       {p.highlights.length > 0 && (
         <section className="mt-10 space-y-4">
           {p.highlights.map((h) => (
-            <div
-              key={h.label}
-              className="rounded-lg border border-border bg-muted/40 p-5"
-            >
+            <div key={h.label} className="rounded-lg border border-border bg-muted/40 p-5">
               <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-brand">
                 {h.label}
               </div>
               <p className="mt-2 text-muted-foreground">{h.body}</p>
             </div>
           ))}
+        </section>
+      )}
+
+      {p.hardware && p.hardware.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-2xl">Hardware</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {p.hardware.map((h) => (
+              <span
+                key={h}
+                className="rounded-md border border-border bg-muted/40 px-2.5 py-1 font-mono text-xs text-muted-foreground"
+              >
+                {h}
+              </span>
+            ))}
+          </div>
         </section>
       )}
 

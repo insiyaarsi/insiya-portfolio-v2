@@ -1,16 +1,22 @@
 import mediscribeThumb from "@/assets/mediscribe.png";
 import doodleliftThumb from "@/assets/doodlelift.png";
 import thriftexThumb from "@/assets/thriftex.png";
+import spotifyDisplayThumb from "@/assets/spotify-album-art-thumbnail.png";
 
 export type Project = {
-  slug: "mediscribe" | "doodlelift" | "thriftex";
+  slug: "mediscribe" | "doodlelift" | "thriftex" | "spotify-display";
   name: string;
   tagline: string;
   role: string;
   timeline: string;
-  status: "shipping" | "in progress" | "shipped";
+  status: "shipping" | "in progress" | "shipped" | "simulator";
+  category: "software" | "hardware";
   ai: boolean;
   stack: string[];
+  /** Physical parts — hardware projects only. */
+  hardware?: string[];
+  /** Fit the thumbnail inside the frame instead of cropping it to fill. */
+  containThumbnail?: boolean;
   repo?: string;
   accent: string; // tailwind class or hex
   thumbnail: string;
@@ -23,6 +29,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "mediscribe",
+    category: "software",
     name: "MediScribe AI",
     tagline: "Clinical audio → structured SOAP notes, offline-capable.",
     role: "Solo · self-directed",
@@ -53,6 +60,7 @@ export const projects: Project[] = [
   },
   {
     slug: "doodlelift",
+    category: "software",
     name: "DoodleLift",
     tagline: "AI-coached strength training with a hand-drawn aesthetic that fights gym anxiety.",
     role: "Solo · in production",
@@ -92,6 +100,7 @@ export const projects: Project[] = [
   },
   {
     slug: "thriftex",
+    category: "software",
     name: "ThriftEx",
     tagline: "Peer-to-peer clothing resale with real-time price negotiation.",
     role: "Co-developer · owned buyer side",
@@ -114,8 +123,64 @@ export const projects: Project[] = [
     ],
     highlights: [],
   },
+  {
+    slug: "spotify-display",
+    category: "hardware",
+    name: "Spotify Album Display",
+    tagline: "An ESP32 that watches what you're playing and paints the album art on a tiny LCD.",
+    role: "Solo · self-directed",
+    timeline: "Aug 2026 — present",
+    status: "simulator",
+    ai: false,
+    stack: [
+      "C++",
+      "Arduino",
+      "Spotify Web API",
+      "OAuth 2.0",
+      "HTTPS",
+      "ArduinoJson",
+      "TFT_eSPI",
+      "TJpg_Decoder",
+    ],
+    hardware: [
+      "ESP32",
+      "ILI9341 240×320 TFT",
+      "Wokwi simulator",
+      "CYD / ESP32-2432S028R (on order)",
+    ],
+    repo: "https://github.com/insiyaarsi/spotify-album-art-display",
+    accent: "#1db954",
+    thumbnail: spotifyDisplayThumb,
+    containThumbnail: true,
+    summary:
+      "Firmware that polls whatever is playing on my Spotify account and renders the album art, track, and artist on a 240×320 LCD — fully proven in simulation before a single part was bought.",
+    problem:
+      "I wanted a small object on my desk that just shows what's playing — no phone, no screen to unlock. The catch is that an ESP32 has a few hundred KB of RAM and no OS, so every comfort a normal app leans on (an HTTP client, a JSON parser, a JPEG decoder, a TLS stack) has to be budgeted for by hand. I built the whole thing in Wokwi first so the logic was settled before hardware money was on the line.",
+    built: [
+      "OAuth 2.0 refresh-token flow over HTTPS, renewing the access token 5 minutes before it expires.",
+      "Polls the currently-playing endpoint every 5 seconds and diffs the track ID — art is only re-downloaded when the song actually changes.",
+      "Streams the album-art JPEG (preferring 300×300, falling back to 64×64), decodes it within a 96 KB buffer, and scales it into a 240×240 area.",
+      "Layout engine for a 40 px track bar, the art, and a 40 px artist bar — long names truncate instead of overflowing.",
+      "Retries failed HTTPS requests up to 3 times with increasing backoff, and falls back to an idle screen when playback stops.",
+      "Reproducible build: Arduino CLI scripts for Windows and macOS/Linux, plus a devcontainer that keeps the toolchain off the host machine.",
+    ],
+    highlights: [
+      {
+        label: "Why simulation first",
+        body: "Wokwi let me settle the wiring, the pin map, and the whole auth-and-decode pipeline before buying anything. The Spotify logic carries over to real hardware unchanged — what changes is the pin map and the Wi-Fi credentials.",
+      },
+      {
+        label: "Next up",
+        body: "Currently sourcing the parts — a CYD (ESP32-2432S028R) and the bits to drive it. Once they arrive: wire the board up physically off the Wokwi diagram, install the CH340 driver and find the COM port, remap the pins in tft_setup.h, then flash a display test to confirm the panel before the real firmware goes on. Also rotating the simulator credentials — Wokwi's public gateway can inspect outbound traffic, so those keys were always meant to be burnable.",
+      },
+    ],
+  },
 ];
 
 export function getProject(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+export function projectsByCategory(category: Project["category"]): Project[] {
+  return projects.filter((p) => p.category === category);
 }
