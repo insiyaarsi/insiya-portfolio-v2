@@ -7,8 +7,7 @@ export const Route = createFileRoute("/uses")({
       { title: "/uses — what Insiya is learning right now" },
       {
         name: "description",
-        content:
-          "The papers, models, tools, and rabbit holes Insiya is currently in.",
+        content: "The papers, models, tools, and rabbit holes Insiya is currently in.",
       },
       { property: "og:title", content: "/uses — Insiya Arsiwala" },
       {
@@ -42,16 +41,29 @@ const sections = [
   {
     title: "on the shelf",
     items: [
-      "The Name of the Wind — Patrick Rothfuss (reading)",
-      "Designing Data-Intensive Applications — Kleppmann (re-reading)",
-      "The Mistborn Trilogy — Sanderson (queued)",
+      "Before the Coffee Gets Cold — Toshikazu Kawaguchi",
+      "The Decision Book - Mikael Krogerus and Roman Tschäppeler",
+      "ACOTAR (re-read)",
+      "We who will Die - Stacia Stark (queued)",
+    ],
+  },
+  {
+    title: "on the watchlist",
+    // TODO(insiya): swap in real titles.
+    items: [
+      "Recently started actually watching films instead of half-watching them",
+      "Building the list from scratch — recommendations very welcome",
+      "Michael - Antoine Fuqua",
+      "21 - Robert Luketic", 
+      "Rio - Carlos Saldanha (all time fav)", 
+      "Obsession - Curry Barker (queued)"
     ],
   },
   {
     title: "in the ears",
     items: [
-      "Pearl Jam, Fleetwood Mac, Bon Iver",
-      "Indian classical when I need to focus",
+      "MJ, Chase Atlantic, Queen",
+      "R&B when I need to focus",
       "Lo-fi guitar loops when I'm writing code",
     ],
   },
@@ -82,9 +94,7 @@ function UsesPage() {
       <div className="mt-12 space-y-10">
         {sections.map((s) => (
           <section key={s.title}>
-            <h2 className="font-mono text-xs uppercase tracking-[0.22em] text-brand">
-              {s.title}
-            </h2>
+            <h2 className="font-mono text-xs uppercase tracking-[0.22em] text-brand">{s.title}</h2>
             <ul className="mt-3 space-y-2">
               {s.items.map((i) => (
                 <li key={i} className="flex gap-3 text-muted-foreground">

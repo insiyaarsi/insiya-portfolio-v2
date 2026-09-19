@@ -169,7 +169,8 @@ function Index() {
           </p>
           <p className="mt-3 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
             try: <span className="text-brand">skills</span> ·{" "}
-            <span className="text-brand">books</span> · <span className="text-brand">gym</span>
+            <span className="text-brand">books</span> · <span className="text-brand">gym</span> ·{" "}
+            <span className="text-brand">movies</span>
           </p>
         </div>
         <TerminalAbout />

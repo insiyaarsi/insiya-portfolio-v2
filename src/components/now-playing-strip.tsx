@@ -1,21 +1,27 @@
 import { useEffect, useState } from "react";
-import { Music, BookOpen, Dumbbell, GitCommit } from "lucide-react";
+import { Music, BookOpen, Dumbbell, GitCommit, Clapperboard } from "lucide-react";
 
 const items = [
   {
     icon: Music,
     label: "now playing",
-    value: "learning the intro to 'Black' — Pearl Jam, on guitar",
+    value: "learning the intro to 'Anastasia' — Guns N Roses, on guitar",
   },
   {
     icon: BookOpen,
     label: "now reading",
-    value: "The Name of the Wind — Patrick Rothfuss",
+    value: "Before the Coffee Gets Cold — Toshikazu Kawaguchi",
   },
   {
     icon: Dumbbell,
     label: "gym pr",
     value: "back squat, chasing a new 1RM this cycle",
+  },
+  {
+    icon: Clapperboard,
+    label: "watching next",
+    // TODO(insiya): swap in the film you're actually watching next.
+    value: "Michael — Antoine Fuqua",
   },
   {
     icon: GitCommit,

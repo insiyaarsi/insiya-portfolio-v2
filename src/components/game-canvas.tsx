@@ -6,14 +6,17 @@ import { useGameMode } from "@/lib/game-mode";
  * Items fall from the top; catch them with arrow keys / WASD / on-screen dpad.
  * pointer-events: none on the canvas — page underneath stays fully interactive.
  */
-type Item = { x: number; y: number; vy: number; kind: 0 | 1 | 2 | 3 };
+type Kind = 0 | 1 | 2 | 3 | 4;
+type Item = { x: number; y: number; vy: number; kind: Kind };
 
-const KIND_LABELS = ["book", "dumbbell", "pick", "coffee"] as const;
+const KIND_LABELS = ["book", "dumbbell", "pick", "coffee", "film"] as const;
 const FACTS: Record<(typeof KIND_LABELS)[number], string[]> = {
   book: ["+1 book — currently reading The Name of the Wind"],
   dumbbell: ["+1 rep — chasing a new squat 1RM"],
   pick: ["+1 riff — learning 'Black' by Pearl Jam"],
   coffee: ["+1 ☕ — fuel acquired"],
+  // TODO(insiya): swap in the film you're actually watching next.
+  film: ["+1 film — currently working through a watchlist"],
 };
 
 export function GameCanvas() {
@@ -37,7 +40,8 @@ export function GameCanvas() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    let W = 0, H = 0;
+    let W = 0,
+      H = 0;
     const resize = () => {
       W = window.innerWidth;
       H = window.innerHeight;
@@ -102,7 +106,8 @@ export function GameCanvas() {
       ctx.fillRect(x + 4, y + 22, 6, 8);
       ctx.fillRect(x + 12, y + 22, 6, 8);
       // avoid unused warnings
-      void P; void skin;
+      void P;
+      void skin;
     };
 
     const drawItem = (it: Item) => {
@@ -126,11 +131,25 @@ export function GameCanvas() {
         ctx.lineTo(it.x, it.y + s * 0.7);
         ctx.closePath();
         ctx.fill();
-      } else {
+      } else if (label === "coffee") {
         ctx.fillStyle = "#8a5a3b";
         ctx.fillRect(it.x, it.y + 4, s, s - 6);
         ctx.fillStyle = "#f5f2ea";
         ctx.fillRect(it.x + 2, it.y + 6, s - 4, 2);
+      } else {
+        // film strip: body + sprocket holes down both edges
+        const h = s * 0.85;
+        ctx.fillStyle = "#3b3550";
+        ctx.fillRect(it.x, it.y, s, h);
+        ctx.fillStyle = "#ffd76a";
+        for (let r = 0; r < 3; r++) {
+          const hy = it.y + 2 + r * 5;
+          ctx.fillRect(it.x + 1.5, hy, 2.5, 2.5);
+          ctx.fillRect(it.x + s - 4, hy, 2.5, 2.5);
+        }
+        // exposed frame in the middle
+        ctx.fillStyle = "#f5f2ea";
+        ctx.fillRect(it.x + 6, it.y + 3, s - 12, h - 6);
       }
     };
 
@@ -154,7 +173,7 @@ export function GameCanvas() {
             x: Math.random() * (W - 20),
             y: -20,
             vy: 0.14 + Math.random() * 0.12,
-            kind: Math.floor(Math.random() * 4) as 0 | 1 | 2 | 3,
+            kind: Math.floor(Math.random() * KIND_LABELS.length) as Kind,
           });
           spawnTimer = 900 + Math.random() * 700;
         }
@@ -196,16 +215,11 @@ export function GameCanvas() {
 
   if (!hydrated || !enabled) return null;
 
-  const press = (key: string, v: boolean) =>
-    (window as any).__pixelInsiya?.press(key, v);
+  const press = (key: string, v: boolean) => (window as any).__pixelInsiya?.press(key, v);
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none fixed inset-0 z-30"
-        aria-hidden
-      />
+      <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-30" aria-hidden />
       <div
         className="pointer-events-none fixed right-6 top-24 z-40 rounded-md border border-phosphor/40 bg-black/60 px-3 py-1.5 font-mono text-xs text-phosphor"
         aria-live="polite"

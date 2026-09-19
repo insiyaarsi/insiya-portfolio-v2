@@ -21,19 +21,25 @@ const responses: Record<string, string[]> = {
     "infra    → vercel, aws, docker, github actions, cloudflare workers",
   ],
   books: [
-    "reading  → the name of the wind — patrick rothfuss",
-    "recent   → mistborn (era 1), piranesi, project hail mary",
+    "reading  → before the coffee gets cold — toshikazu kawaguchi",
+    "recent   → ACOTAR (re-read), the decision book, road of bones",
     "vibe     → fantasy fiction · escape > efficiency",
   ],
   guitar: [
-    "learning → 'black' — pearl jam (intro)",
-    "genres   → 90s alt, indie folk, indian classical",
+    "learning → 'anastasia' — guns n roses (intro)",
+    "genres   → hard rock, classical/neo-classical, blues rock",
     "gear     → acoustic + a very patient tuning app",
   ],
   gym: [
     "split    → lower / upper / lower / upper · 4x per week",
     "chasing  → back squat 1rm this cycle",
     "why      → the ceiling is always higher than i think.",
+  ],
+  // TODO(insiya): swap in real titles — placeholders below.
+  movies: [
+    "watching → michael - antoine fuqua",
+    "next up  → obsession - curry barker",
+    "vibe     → new hobby · building the watchlist as i go",
   ],
   resume: ["opening résumé in a new tab… (drive.google.com)"],
   photos: ["opening /photos — a small gallery of sunsets, water, and skies."],
@@ -43,12 +49,12 @@ const responses: Record<string, string[]> = {
     "linkedin → linkedin.com/in/insiya-arsi",
   ],
   help: [
-    "commands → whoami · currently · skills · books · guitar · gym · resume · contact · clear · help",
+    "commands → whoami · currently · skills · books · guitar · gym · movies · resume · contact · clear · help",
   ],
   clear: [],
 };
 
-const chips = ["whoami", "currently", "skills", "books", "gym", "resume"] as const;
+const chips = ["whoami", "currently", "skills", "books", "gym", "movies", "resume"] as const;
 
 export function TerminalAbout() {
   const [lines, setLines] = useState<Line[]>([
